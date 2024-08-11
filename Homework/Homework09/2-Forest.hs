@@ -42,3 +42,6 @@ Using GHCi, like the "Maze" game, this game should look like this:
 *Main> solveForest testForest [GoForward, GoLeft , GoRight]
 "YOU'VE FOUND THE EXIT!!"
 -}
+
+type Stamina = Int
+

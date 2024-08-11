@@ -3,8 +3,8 @@
 -- the value provided as every element of the list.
 --
 -- >>> repeat 17
---[17,17,17,17,17,17,17,17,17...
-
+-- ProgressCancelledException
+repeat' n = n : repeat' n
 
 -- Question 2
 -- Using the `repeat'` function and the `take` function we defined in the lesson (comes with Haskell),
@@ -17,6 +17,8 @@
 -- []
 -- >>> replicate 4 True
 -- [True,True,True,True]
+replicate' :: Int -> a -> [a]
+replicate' n x = take n (repeat' x)
 
 
 -- Question 3
@@ -25,6 +27,8 @@
 -- >>> concat' [[1,2],[3],[4,5,6]]
 -- [1,2,3,4,5,6]
 
+concat' :: [[a]] -> [a]
+concat' = foldr (++) []
 
 -- Question 4
 -- Write a function called `zip'` that takes two lists and returns a list of
@@ -44,7 +48,9 @@
 -- []
 -- >>> zip' [1..] []
 -- []
-
+zip' [] ys = []
+zip' xs [] = []
+zip' (x:xs) (y:ys) = (x,y) : zip' xs ys
 
 
 -- Question 5
@@ -59,7 +65,9 @@
 --
 -- >>> zipWith (+) [1, 2, 3] [4, 5, 6]
 -- [5,7,9]
-
+zipWith' _ [] _ = []
+zipWith' _ _ [] = []
+zipWith' f (x:xs) (y:ys) = (f x y) : (zipWith' f xs ys)
 
 -- Question 6
 -- Write a function called `takeWhile'` that takes a precate and a list and
@@ -71,12 +79,27 @@
 -- [1,2,3]
 -- >>> takeWhile (< 0) [1,2,3]
 -- []
-
+takeWhile' :: (a -> Bool) -> [a] -> [a]
+takeWhile' _ [] = []
+takeWhile' pred (x:xs)
+  | pred x = x : takeWhile' pred xs
+  | otherwise = [] 
 
 -- Question 7 (More difficult)
 -- Write a function that takes in an integer n, calculates the factorial n! and
 -- returns a string in the form of 1*2* ... *n = n! where n! is the actual result.
+-- factorial :: Int -> String
+-- factorial n = show go
+--   where
+--     go = foldl (*) 1 [1..n]
 
+factorial :: Int -> String
+factorial n = go n 1 1
+  where
+    go :: Int -> Int -> Int -> String
+    go n i s
+      | i < n = show i ++ "*" ++ go n (i+1) (i * s)
+      | otherwise = show n ++ "=" ++ show (i * s)
 
 -- Question 8
 -- Below you have defined some beer prices in bevogBeerPrices and your order list in
@@ -100,3 +123,9 @@ orderList =
 
 deliveryCost :: Double
 deliveryCost = 8.50
+
+type Beer = (String, Double)
+cost :: [Beer] -> [Beer] -> Double
+cost prices orders = foldr (+) deliveryCost orderCost
+  where
+    orderCost = zipWith' (\(_, price) (_,quantity) -> price * quantity) prices orders

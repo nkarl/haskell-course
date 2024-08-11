@@ -2,13 +2,13 @@ module Main where
 
 --------------------------------------------------------------------------------
 --------------------------------------------------------------------------------
--- IMPORTANT: Read the README.md file before completing the homework.
+-- IMPORTANT: Read the README.md path before completing the homework.
 --------------------------------------------------------------------------------
 --------------------------------------------------------------------------------
 
 -- This is a CLI application that allows the user to manage a TODO list.
 -- The user can add and remove items from the list and save and load the list
--- from a file.
+-- from a path.
 -- It's a working prototype, but it has some bugs. Specifically, it doesn't
 -- handle errors very well. Your mission, should you choose to accept it, is to
 -- fix those bugs and make the application more robust. Hint: Try to interact
@@ -34,12 +34,11 @@ delete n (a : as) = a : delete (n - 1) as
 interpretCommand :: String -> [String] -> IO ()
 interpretCommand cmd todos = case cmd of
   "q" -> return ()
-  ('+' : ' ' : todo) -> prompt (todo : todos)
-  ('-' : ' ' : num) -> prompt $ delete (read num) todos
-  ('s' : ' ' : fn) ->
-    writeFile fn (show todos)
-  ('l' : ' ' : fn) -> readFile fn >>= prompt . read
-  _ -> do
+  ('+' : ' ' : todo)  -> prompt (todo : todos)
+  ('-' : ' ' : num)   -> prompt $ delete (read num) todos
+  ('s' : ' ' : path)  -> writeFile  path (show todos)
+  ('l' : ' ' : path)  -> readFile   path >>= prompt . read
+  _   -> do
     putStrLn ("Invalid command: `" ++ cmd ++ "`")
     prompt todos
 

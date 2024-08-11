@@ -1,3 +1,4 @@
+import Control.Monad (void)
 import Data.List
 import System.CPUTime (getCPUTime)
 import System.Directory (doesFileExist, listDirectory)
@@ -20,7 +21,8 @@ and prints it to the terminal inside a string message.
 (hidden files are not included)
 -}
 
--- listFiles :: IO ()
+listFiles :: IO ()
+listFiles = listDirectory "." >>= print
 
 {-
 -- Question 2 --
@@ -29,8 +31,15 @@ to a file called msg.txt, and after that, it reads the text from the msg.txt
 file and prints it back. Use the writeFile and readFile functions.
 -}
 
--- createMsg :: IO ()
-
+createMsg :: IO ()
+createMsg = do
+  print "Please type something"
+  s <- getLine
+  let path = "msg.txt"
+  writeFile path s
+  s <- readFile path
+  print s
+  pure ()
 
 {-
 -- Context for Questions 3 and 4 --
@@ -71,8 +80,13 @@ Use the getCPUTime :: IO Integer function to get the CPU time before and after t
 The CPU time here is given in picoseconds (which is 1/1000000000000th of a second).
 -}
 
--- timeIO :: IO a -> IO ()
-
+timeIO :: IO a -> IO ()
+timeIO action = do
+  start <- getCPUTime
+  result <- action
+  end <- getCPUTime
+  print $ fromIntegral (end - start) / 1000000000000
+  pure ()
 
 {-
 -- Question 4 --
@@ -81,7 +95,15 @@ and compares the time all three algorithms take to produce the largest prime bef
 limit. Print the number and time to the standard output.
 -}
 
--- benchmark :: IO ()
+benchmark :: IO ()
+benchmark = do
+  input <- getLine
+  let n = read input :: Integer
+  timeAndShow primes1 n
+  timeAndShow primes2 n
+  timeAndShow primes3 n
+ where
+  timeAndShow f n = timeIO . print . last $ f n
 
 {-
  -- Question 5 -- EXTRA CREDITS -- (In case the previous ones were too easy)
