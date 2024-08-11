@@ -19,7 +19,7 @@ Continuing with the logistics software of the lesson:
  -  - a present that `Maybe` contains something, but *always* has a name tag of the recipient
 -}
 
-pJ = Present @String "John" (Has @String "something")
+pJ = Present @String "John" (Has @String "Some ADA")
 pM = Present @String "Mary" (Empty @String)
 
 data Box a = Empty | Has a deriving (Show)
