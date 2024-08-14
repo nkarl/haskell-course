@@ -1,5 +1,5 @@
-import           Data.Monoid
-import           Data.Semigroup
+import Data.Monoid
+import Data.Semigroup
 
 --------------------------------------------------------------------------------------------
 ---------------------------------------- NonEmpty ------------------------------------------
@@ -20,6 +20,11 @@ l5 = 'w' :| "orld"
 -- Now, define a Semigroup instance for NonEmpty:
 
 --  TODO: Define the Semigroup instance for NonEmpty
+instance Semigroup (NonEmpty a) where
+  (x :| xs) <> (y :| ys) = x :| go xs (y : ys)
+   where
+    go [] ys = ys
+    go (x : xs) ys = x : go xs ys
 
 -- Test it out
 
@@ -37,5 +42,4 @@ l5 = 'w' :| "orld"
 -- no identity element for NonEmpty.
 
 -- instance Monoid (NonEmpty a) where
-    -- mempty = undefined
-
+--  mempty = undefined

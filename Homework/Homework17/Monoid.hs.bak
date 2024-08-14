@@ -110,6 +110,7 @@ log3 = Log ["!"]
 - You could define a Config type and make it a Monoid, where mempty is a default configuration
 - and mappend overrides the configuration.
 -}
+
 data Config = Config {port :: Int, host :: String} deriving (Show, Eq)
 
 -- TODO: Define the Semigroup and Monoid instances for Config
@@ -118,14 +119,14 @@ instance Semigroup Config where
   (<>) c1 c2 = c2
 
 instance Monoid Config where
-  mempty = Config{port = 4000, host = "example.com"}
+  mempty = Config{port = 8080, host = "localhost"}
 
 -- Test it out
 
 c1, c2, c3 :: Config
-c1 = Config{port = 8080, host = "localhost"}
-c2 = Config{port = 3000, host = "localhost"}
-c3 = Config{port = 4000, host = "example.com"}
+c1 = Config { port = 8080, host = "localhost" }
+c2 = Config { port = 3000, host = "localhost" }
+c3 = Config { port = 4000, host = "example.com" }
 
 --- >>> c1 <> c2
 -- Config {port = 3000, host = "localhost"}
@@ -160,43 +161,13 @@ c3 = Config{port = 4000, host = "example.com"}
  - Once you define the type, make it a Monoid.
  -}
 
-data Severity = Low | Medium | High | Critical deriving (Show, Eq, Ord)
+-- data Severity = Low | Medium | High | Critical deriving (Show, Eq, Ord)
 
 -- TODO: Define the Semigroup and Monoid instances for Severity
 
-instance Semigroup Severity where
-  (<>) s1 s2
-    | s1 <= s2 = s2
-    | otherwise = s1
-
-instance Monoid Severity where
-  mempty = Low
-
 -- TODO: Define the Emergency type
 
-data Emergency
-  = Safe
-  | Emergency
-      { severity :: Severity
-      , description :: String
-      , resolved :: All
-      }
-  deriving (Show, Eq)
-
 -- TODO: Define the Semigroup and Monoid instances for Emergency
-
-instance Semigroup Emergency where
-  (<>) s1 Safe = s1
-  (<>) Safe s1 = s1
-  (<>) s1 s2 =
-    Emergency
-      { severity = severity s1 <> severity s2
-      , description = description s1 <> description s2
-      , resolved = resolved s1 <> resolved s2
-      }
-
-instance Monoid Emergency where
-  mempty = Safe -- Emergency{severity = Low, description = "No risk", resolved = All True}
 
 -- Test it out
 
