@@ -72,7 +72,7 @@ printCommands = do
   putStrLn "q               - Quit without saving"
 
 {-
- - TODO:
+ - TODO
  -  1. [x] app crashes on when using delete option after loading file
  -    - problem description:
  -      1. load the storage file into app.

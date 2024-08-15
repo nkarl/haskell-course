@@ -8,7 +8,7 @@
 newtype All = All {getAll :: Bool} deriving (Show, Eq)
 newtype Any = Any {getAny :: Bool} deriving (Show, Eq)
 
--- TODO: Define the Semigroup and Monoid instances for All and Any
+-- DONE: Define the Semigroup and Monoid instances for All and Any
 instance Semigroup All where
   All False <> All True = All False
   All True <> All False = All False
@@ -66,7 +66,7 @@ instance Monoid Any where
 
 newtype Log = Log [String] deriving (Show, Eq)
 
--- TODO: Define the Semigroup and Monoid instances for Log
+-- DONE: Define the Semigroup and Monoid instances for Log
 
 instance Semigroup Log where
   (<>) l1 (Log []) = l1
@@ -112,7 +112,7 @@ log3 = Log ["!"]
 -}
 data Config = Config {port :: Int, host :: String} deriving (Show, Eq)
 
--- TODO: Define the Semigroup and Monoid instances for Config
+-- DONE: Define the Semigroup and Monoid instances for Config
 
 instance Semigroup Config where
   (<>) c1 c2 = c2
@@ -162,7 +162,7 @@ c3 = Config{port = 4000, host = "example.com"}
 
 data Severity = Low | Medium | High | Critical deriving (Show, Eq, Ord)
 
--- TODO: Define the Semigroup and Monoid instances for Severity
+-- DONE: Define the Semigroup and Monoid instances for Severity
 
 instance Semigroup Severity where
   (<>) s1 s2
@@ -172,7 +172,7 @@ instance Semigroup Severity where
 instance Monoid Severity where
   mempty = Low
 
--- TODO: Define the Emergency type
+-- DONE: Define the Emergency type
 
 data Emergency
   = Safe
@@ -183,7 +183,7 @@ data Emergency
       }
   deriving (Show, Eq)
 
--- TODO: Define the Semigroup and Monoid instances for Emergency
+-- DONE: Define the Semigroup and Monoid instances for Emergency
 
 instance Semigroup Emergency where
   (<>) s1 Safe = s1
